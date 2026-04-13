@@ -20,3 +20,5 @@ Route::get('/supplier/{supplier}', [SuppliersController::class, 'show']);
 Route::post('/supplier', [SuppliersController::class, 'store']);
 Route::put('/supplier/{supplier}', [SuppliersController::class, 'update']);
 Route::delete('/supplier/{supplier}', [SuppliersController::class, 'destroy']);
+
+//Teste
