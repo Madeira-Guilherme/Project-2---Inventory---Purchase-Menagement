@@ -65,7 +65,6 @@ class PurchaseOrdersController extends Controller
             properties: [
                 new OA\Property(property: "supplier_id", type: "integer", example: 1),
                 new OA\Property(property: "order_number", type: "string", example: "PO-001"),
-                new OA\Property(property: "status", type: "string", example: "draft"),
                 new OA\Property(property: "total_amount", type: "number", example: 100),
                 new OA\Property(property: "ordered_at", type: "string", format: "date", example: "2026-04-14"),
                 new OA\Property(property: "received_at", type: "string", format: "date", nullable: true),
@@ -78,7 +77,7 @@ class PurchaseOrdersController extends Controller
                     description: "List of products in this purchase order",
                     items: new OA\Items(
                         type: "object",
-                        required: ["product_id", "quantity", "unit_price"],
+                        required: ["product_id", "quantity"],
                         properties: [
                             new OA\Property(
                                 property: "product_id",
@@ -89,11 +88,6 @@ class PurchaseOrdersController extends Controller
                                 property: "quantity",
                                 type: "integer",
                                 example: 2
-                            ),
-                            new OA\Property(
-                                property: "unit_price",
-                                type: "number",
-                                example: 10.5
                             ),
                         ]
                     )
@@ -112,56 +106,49 @@ class PurchaseOrdersController extends Controller
         )
     ]
 )]
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'supplier_id'   => 'required|integer|exists:suppliers,id',
-            'order_number'  => 'required|string|unique:purchase_orders,order_number',
-            'status'        => 'nullable|string',
-            'total_amount'  => 'required|numeric|min:0',
-            'ordered_at'    => 'required|date',
-            'received_at'   => 'nullable|date',
-            'created_by'    => 'required|integer|exists:users,id',
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'supplier_id'   => 'required|integer|exists:suppliers,id',
+        'order_number'  => 'required|string|unique:purchase_orders,order_number',
+        'total_amount'  => 'required|numeric|min:0',
+        'ordered_at'    => 'required|date',
+        'received_at'   => 'nullable|date',
+        'created_by'    => 'required|integer|exists:users,id',
 
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|integer|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.unit_price' => 'required|numeric|min:0',
+        'items' => 'required|array|min:1',
+        'items.*.product_id' => 'required|integer|exists:products,id',
+        'items.*.quantity' => 'required|integer|min:1',
+    ]);
+
+    $purchase = DB::transaction(function () use ($validated) {
+
+    $purchase = PurchaseOrders::create([
+        'supplier_id' => $validated['supplier_id'],
+        'order_number' => $validated['order_number'],
+        'status' => 'draft',
+        'total_amount' => $validated['total_amount'],
+        'ordered_at' => $validated['ordered_at'],
+        'received_at' => $validated['received_at'] ?? null,
+        'created_by' => $validated['created_by'],
+    ]);
+
+    foreach ($validated['items'] as $item) {
+        $purchase->items()->create([
+            'product_id' => $item['product_id'],
+            'quantity' => $item['quantity'],
         ]);
-
-        return DB::transaction(function () use ($validated) {
-
-            // 1. Create purchase order
-            $purchase = PurchaseOrders::create([
-                'supplier_id' => $validated['supplier_id'],
-                'order_number' => $validated['order_number'],
-                'status' => $validated['status'] ?? 'draft',
-                'total_amount' => $validated['total_amount'],
-                'ordered_at' => $validated['ordered_at'],
-                'received_at' => $validated['received_at'] ?? null,
-                'created_by' => $validated['created_by'],
-            ]);
-
-            // 2. Create items
-            foreach ($validated['items'] as $item) {
-
-                $lineTotal = $item['quantity'] * $item['unit_price'];
-
-                $purchase->items()->create([
-                    'product_id' => $item['product_id'],
-                    'quantity' => $item['quantity'],
-                    'unit_price' => $item['unit_price'],
-                    'line_total' => $lineTotal,
-                ]);
-            }
-
-            // 3. Return with items
-            return response()->json([
-                'message' => 'Purchase order created successfully',
-                'data' => $purchase->load('items.product')
-            ], 201);
-        });
     }
+
+    return $purchase;
+});
+
+    return response()->json([
+        'message' => 'Purchase order created successfully',
+        'data' => $purchase->load('items.product')
+    ], 201);
+}
+
 
     #[OA\Get(
         path: "/api/purchaseorders/{purchases}",
@@ -317,6 +304,21 @@ class PurchaseOrdersController extends Controller
             ], 400);
         }
 
+        $purchase->load('items.product');
+
+        foreach ($purchase->items as $item) {
+
+            $product = $item->product;
+
+                if ($product) {
+
+                        if ($product->stock_quantity < $item->quantity) {
+                            throw new \Exception("Not enough stock for product ID {$product->id}");
+                        }
+
+                        $product->decrement('stock_quantity', $item->quantity);
+                    }
+                }
         $purchase->update([
             'status' => "submitted"
         ]);

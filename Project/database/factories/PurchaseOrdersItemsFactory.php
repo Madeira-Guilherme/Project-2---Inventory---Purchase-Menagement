@@ -19,12 +19,14 @@ class PurchaseOrdersItemsFactory extends Factory
      */
     public function definition(): array
     {
+
+        $product = Products::factory()->create();
         $quantity = $this->faker->numberBetween(1, 50);
-        $unitPrice = $this->faker->randomFloat(2, 5, 500);
+        $unitPrice = $product->unit_price;
 
         return [
             'purchase_order_id' => PurchaseOrders::factory(),
-            'product_id' => Products::factory(),
+            'product_id' => $product->id,
 
             'quantity' => $quantity,
             'unit_price' => $unitPrice,

@@ -8,14 +8,12 @@ use App\Models\PurchaseOrders;
 
 class PurchaseOrdersItems extends Model
 {
+    use HasFactory;
 
-use HasFactory;
     protected $fillable = [
         'purchase_order_id',
         'product_id',
         'quantity',
-        'unit_price',
-        'line_total',
     ];
 
     protected $casts = [
@@ -23,7 +21,18 @@ use HasFactory;
         'line_total' => 'decimal:2',
     ];
 
-    // Relationships
+    protected static function booted()
+    {
+        static::saving(function ($item) {
+        if ($item->product && $item->unit_price === null) {
+            $item->unit_price = $item->product->unit_price;
+        }
+
+        // Calculate line total
+        $item->line_total = $item->quantity * $item->unit_price;
+        });
+    }
+
     public function purchaseOrder()
     {
         return $this->belongsTo(PurchaseOrders::class);

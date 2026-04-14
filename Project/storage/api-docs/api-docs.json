@@ -457,8 +457,7 @@
                                         "items": {
                                             "required": [
                                                 "product_id",
-                                                "quantity",
-                                                "unit_price"
+                                                "quantity"
                                             ],
                                             "properties": {
                                                 "product_id": {
@@ -468,10 +467,6 @@
                                                 "quantity": {
                                                     "type": "integer",
                                                     "example": 2
-                                                },
-                                                "unit_price": {
-                                                    "type": "number",
-                                                    "example": 10.5
                                                 }
                                             },
                                             "type": "object"
