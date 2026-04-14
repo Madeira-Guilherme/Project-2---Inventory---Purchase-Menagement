@@ -12,6 +12,149 @@
         }
     ],
     "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login user",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout user",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -262,7 +405,7 @@
                 "tags": [
                     "Purchase Orders"
                 ],
-                "summary": "Create purchase order",
+                "summary": "Create purchase order with items",
                 "operationId": "c72025cf65d88e0cca2a00fbd6891c31",
                 "requestBody": {
                     "required": true,
@@ -274,31 +417,65 @@
                                     "order_number",
                                     "total_amount",
                                     "ordered_at",
-                                    "created_by"
+                                    "created_by",
+                                    "items"
                                 ],
                                 "properties": {
                                     "supplier_id": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "order_number": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "PO-001"
                                     },
                                     "status": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "draft"
                                     },
                                     "total_amount": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "example": 100
                                     },
                                     "ordered_at": {
                                         "type": "string",
-                                        "format": "date"
+                                        "format": "date",
+                                        "example": "2026-04-14"
                                     },
                                     "received_at": {
                                         "type": "string",
-                                        "format": "date"
+                                        "format": "date",
+                                        "nullable": true
                                     },
                                     "created_by": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "items": {
+                                        "description": "List of products in this purchase order",
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_id",
+                                                "quantity",
+                                                "unit_price"
+                                            ],
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "unit_price": {
+                                                    "type": "number",
+                                                    "example": 10.5
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -308,7 +485,10 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Purchase order created"
+                        "description": "Purchase order created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
@@ -416,6 +596,96 @@
                 "responses": {
                     "200": {
                         "description": "Deleted"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/purchaseorders/{id}/submit": {
+            "post": {
+                "tags": [
+                    "Purchase Orders"
+                ],
+                "summary": "Submit purchase order",
+                "operationId": "9ff512eb2314a0bee72756ab33e45385",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Submitted successfully"
+                    },
+                    "400": {
+                        "description": "Invalid status transition"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/purchaseorders/{id}/receive": {
+            "post": {
+                "tags": [
+                    "Purchase Orders"
+                ],
+                "summary": "Mark purchase order as received",
+                "operationId": "aa1fc7136703bfce085ace3e5be79e8a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Received successfully"
+                    },
+                    "400": {
+                        "description": "Invalid status transition"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/purchaseorders/{id}/cancel": {
+            "post": {
+                "tags": [
+                    "Purchase Orders"
+                ],
+                "summary": "Cancel purchase order",
+                "operationId": "9a46b2b7a5cce5efe70b51f5e9a116cc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cancelled successfully"
+                    },
+                    "400": {
+                        "description": "Invalid status transition"
                     },
                     "404": {
                         "description": "Not found"
@@ -653,10 +923,23 @@
             }
         }
     },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
     "tags": [
         {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
             "name": "Purchase Orders",
-            "description": "Purchase order management endpoints"
+            "description": "Purchase Orders"
         },
         {
             "name": "Suppliers",

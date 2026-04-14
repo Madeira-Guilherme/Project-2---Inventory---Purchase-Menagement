@@ -33,7 +33,7 @@ use HasFactory;
 
     public function items()
     {
-        return $this->hasMany(PurchaseOrdersItems::class);
+        return $this->hasMany(PurchaseOrdersItems::class, 'purchase_order_id');
     }
 
     public function creator()
