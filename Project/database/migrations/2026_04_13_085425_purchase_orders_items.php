@@ -22,9 +22,9 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
 
             $table->decimal('unit_price', 10, 2);
-
             $table->decimal('line_total', 12, 2)->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

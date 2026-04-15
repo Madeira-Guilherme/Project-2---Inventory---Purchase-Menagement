@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('stock_quantity');
             $table->boolean('is_active')->default(true);
 
+            $table->softDeletes();
             $table->timestamps();
             });
     }

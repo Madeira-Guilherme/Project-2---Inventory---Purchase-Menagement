@@ -270,6 +270,50 @@ public function store(Request $request)
     }
 
     #[OA\Post(
+        path: "/api/purchaseorders/{id}/restore",
+        tags: ["Purchase Orders"],
+        summary: "Restore soft deleted purchase order",
+        security: [["sanctum" => []]],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "ID of the soft deleted purchase order",
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Purchase order restored successfully",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "message", type: "string", example: "Purchase Order restored")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: "No Permission"
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Purchase order not found"
+            )
+        ]
+    )]
+    public function restore($id)
+    {
+        $purchase = PurchaseOrders::onlyTrashed()->findOrFail($id);
+        $purchase->restore();
+
+        return response()->json([
+            'message' => 'Purchase Order restored'
+        ]);
+    }
+
+    #[OA\Post(
         path: "/api/purchaseorders/{id}/submit",
         tags: ["Purchase Orders"],
         summary: "Submit purchase order",

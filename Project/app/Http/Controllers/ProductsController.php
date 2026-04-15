@@ -208,4 +208,48 @@ class ProductsController extends Controller
             'message' => 'Product deleted successfully'
         ]);
     }
+
+    #[OA\Post(
+        path: "/api/products/{id}/restore",
+        tags: ["Products"],
+        summary: "Restore soft deleted product",
+        security: [["sanctum" => []]],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "ID of the soft deleted product",
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Product restored successfully",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "message", type: "string", example: "Product restored")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: "No Permission"
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Product not found"
+            )
+        ]
+    )]
+    public function restore($id)
+    {
+        $product = Products::onlyTrashed()->findOrFail($id);
+        $product->restore();
+
+        return response()->json([
+            'message' => 'Product restored'
+        ]);
+    }
 }

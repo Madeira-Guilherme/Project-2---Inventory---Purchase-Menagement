@@ -206,4 +206,52 @@ public function show(string $supplier)
             'message' => 'Supplier deleted successfully'
         ]);
     }
+
+    #[OA\Post(
+        path: "/api/suppliers/{id}/restore",
+        tags: ["Suppliers"],
+        summary: "Restore a soft-deleted supplier",
+        security: [["sanctum" => []]],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "ID of the supplier to restore",
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Supplier restored successfully",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "message",
+                            type: "string",
+                            example: "Supplier restored"
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Supplier not found or not deleted"
+            ),
+            new OA\Response(
+                response: 403,
+                description: "No Permission"
+            )
+        ]
+    )]
+    public function restore($id)
+    {
+        $supplier = Suppliers::onlyTrashed()->findOrFail($id);
+        $supplier->restore();
+
+        return response()->json([
+            'message' => 'Supplier restored'
+        ]);
+    }
 }
