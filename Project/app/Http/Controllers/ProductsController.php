@@ -13,6 +13,7 @@ class ProductsController extends Controller
     path: "/api/products",
     tags: ["Products"],
     summary: "Get all products",
+    security: [["sanctum" => []]],
     responses: [
         new OA\Response(
             response: 200,
@@ -51,6 +52,7 @@ class ProductsController extends Controller
     path: "/api/products",
     tags: ["Products"],
     summary: "Create product",
+    security: [["sanctum" => []]],
     requestBody: new OA\RequestBody(
         required: true,
         content: new OA\JsonContent(
@@ -66,7 +68,8 @@ class ProductsController extends Controller
         )
     ),
     responses: [
-        new OA\Response(response: 201, description: "Created")
+        new OA\Response(response: 201, description: "Created"),
+        new OA\Response(response: 403, description: "No Permission"),
     ]
 )]
     public function store(Request $request)
@@ -94,6 +97,7 @@ class ProductsController extends Controller
     path: "/api/products/{product}",
     tags: ["Products"],
     summary: "Get single product",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "product",
@@ -103,14 +107,9 @@ class ProductsController extends Controller
         )
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: "Product found"
-        ),
-        new OA\Response(
-            response: 404,
-            description: "Not found"
-        )
+        new OA\Response(response: 200,description: "Product found"),
+        new OA\Response(response: 404, description: "Not found"),
+        new OA\Response(response: 403, description: "No Permission"),
     ]
 )]
     public function show(string $id)
@@ -131,6 +130,7 @@ class ProductsController extends Controller
     path: "/api/products/{product}",
     tags: ["Products"],
     summary: "Update product",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "product",
@@ -154,6 +154,7 @@ class ProductsController extends Controller
     ),
     responses: [
         new OA\Response(response: 200, description: "Updated"),
+        new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 404, description: "Not found")
     ]
 )]
@@ -184,6 +185,7 @@ class ProductsController extends Controller
     path: "/api/products/{product}",
     tags: ["Products"],
     summary: "Delete product",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "product",
@@ -194,6 +196,7 @@ class ProductsController extends Controller
     ],
     responses: [
         new OA\Response(response: 200, description: "Deleted"),
+        new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 404, description: "Not found")
     ]
 )]

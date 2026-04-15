@@ -59,7 +59,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $user->assignRole('user');
+
+        $user->assignRole('purchaser');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -145,6 +146,49 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logged out'
+        ]);
+    }
+
+#[OA\Get(
+    path: "/api/me",
+    tags: ["Authentication"],
+    summary: "Get authenticated user",
+    security: [["sanctum" => []]],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Authenticated user data",
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: "user",
+                        type: "object"
+                    ),
+                    new OA\Property(
+                        property: "roles",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(
+                        property: "permissions",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    )
+                ]
+            )
+        ),
+        new OA\Response(
+            response: 401,
+            description: "Unauthenticated"
+        )
+    ]
+)]
+    public function me(Request $request)
+    {
+        return response()->json([
+            'user' => $request->user(),
+            'roles' => $request->user()->getRoleNames(),
+            'permissions' => $request->user()->getAllPermissions()->pluck('name'),
         ]);
     }
 }

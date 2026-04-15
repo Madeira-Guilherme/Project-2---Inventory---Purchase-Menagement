@@ -17,6 +17,7 @@ class PurchaseOrdersController extends Controller
         path: "/api/purchaseorders",
         tags: ["Purchase Orders"],
         summary: "Get all purchase orders",
+        security: [["sanctum" => []]],
         responses: [
             new OA\Response(
                 response: 200,
@@ -50,6 +51,7 @@ class PurchaseOrdersController extends Controller
     path: "/api/purchaseorders",
     tags: ["Purchase Orders"],
     summary: "Create purchase order with items",
+    security: [["sanctum" => []]],
     requestBody: new OA\RequestBody(
         required: true,
         content: new OA\JsonContent(
@@ -96,14 +98,9 @@ class PurchaseOrdersController extends Controller
         )
     ),
     responses: [
-        new OA\Response(
-            response: 201,
-            description: "Purchase order created successfully"
-        ),
-        new OA\Response(
-            response: 422,
-            description: "Validation error"
-        )
+        new OA\Response(response: 201,description: "Purchase order created successfully"),
+        new OA\Response(response: 403, description: "No Permission"),
+        new OA\Response(response: 422,description: "Validation error")
     ]
 )]
 public function store(Request $request)
@@ -154,6 +151,7 @@ public function store(Request $request)
         path: "/api/purchaseorders/{purchases}",
         tags: ["Purchase Orders"],
         summary: "Get single purchase order",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "purchases",
@@ -163,14 +161,9 @@ public function store(Request $request)
             )
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: "Purchase order found"
-            ),
-            new OA\Response(
-                response: 404,
-                description: "Not found"
-            )
+            new OA\Response(response: 200,description: "Purchase order found"),
+            new OA\Response(response: 403, description: "No Permission"),
+            new OA\Response(response: 404,description: "Not found")
         ]
     )]
     public function show(string $purchases)
@@ -183,6 +176,7 @@ public function store(Request $request)
         path: "/api/purchaseorders/{purchases}",
         tags: ["Purchase Orders"],
         summary: "Update purchase order",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "purchases",
@@ -207,6 +201,7 @@ public function store(Request $request)
         ),
         responses: [
             new OA\Response(response: 200, description: "Updated"),
+            new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]
     )]
@@ -242,6 +237,7 @@ public function store(Request $request)
         path: "/api/purchaseorders/{purchases}",
         tags: ["Purchase Orders"],
         summary: "Delete purchase order",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "purchases",
@@ -252,6 +248,7 @@ public function store(Request $request)
         ],
         responses: [
             new OA\Response(response: 200, description: "Deleted"),
+            new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]
     )]
@@ -276,6 +273,7 @@ public function store(Request $request)
         path: "/api/purchaseorders/{id}/submit",
         tags: ["Purchase Orders"],
         summary: "Submit purchase order",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "id",
@@ -287,6 +285,7 @@ public function store(Request $request)
         responses: [
             new OA\Response(response: 200, description: "Submitted successfully"),
             new OA\Response(response: 400, description: "Invalid status transition"),
+            new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]
     )]
@@ -333,6 +332,7 @@ public function store(Request $request)
     path: "/api/purchaseorders/{id}/receive",
     tags: ["Purchase Orders"],
     summary: "Mark purchase order as received",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "id",
@@ -344,6 +344,7 @@ public function store(Request $request)
     responses: [
         new OA\Response(response: 200, description: "Received successfully"),
         new OA\Response(response: 400, description: "Invalid status transition"),
+        new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 404, description: "Not found")
     ]
     )]
@@ -375,6 +376,7 @@ public function store(Request $request)
     path: "/api/purchaseorders/{id}/cancel",
     tags: ["Purchase Orders"],
     summary: "Cancel purchase order",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "id",
@@ -386,6 +388,7 @@ public function store(Request $request)
     responses: [
         new OA\Response(response: 200, description: "Cancelled successfully"),
         new OA\Response(response: 400, description: "Invalid status transition"),
+        new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 404, description: "Not found")
     ]
     )]

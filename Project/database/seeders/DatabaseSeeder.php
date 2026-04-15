@@ -45,12 +45,19 @@ class DatabaseSeeder extends Seeder
         PurchaseOrders::factory(10)->create();
         PurchaseOrdersItems::factory(10)->create();
         User::factory()
-        ->count(20)
+        ->count(5)
         ->create()
         ->each(function ($user)
         { $user->assignRole(
              fake()->randomElement(['purchaser', 'warehouseoperator'])
             );
+        });
+
+        User::factory()
+        ->count(1)
+        ->create()
+        ->each(function ($user)
+        { $user->assignRole('admin');
         });
     }
 }

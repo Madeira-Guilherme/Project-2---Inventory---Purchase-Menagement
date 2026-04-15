@@ -16,6 +16,7 @@ class SuppliersController extends Controller
         path: "/api/suppliers",
         tags: ["Suppliers"],
         summary: "Get all suppliers",
+        security: [["sanctum" => []]],
         responses: [
             new OA\Response(
                 response: 200,
@@ -34,7 +35,8 @@ class SuppliersController extends Controller
                         ]
                     )
                 )
-            )
+            ),
+            new OA\Response(response: 403, description: "No Permission"),
         ]
     )]
     public function index()
@@ -46,6 +48,7 @@ class SuppliersController extends Controller
         path: "/api/suppliers",
         tags: ["Suppliers"],
         summary: "Create a supplier",
+        security: [["sanctum" => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
@@ -61,7 +64,8 @@ class SuppliersController extends Controller
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: "Supplier created")
+            new OA\Response(response: 201, description: "Supplier created"),
+            new OA\Response(response: 403, description: "No Permission"),
         ]
     )]
     public function store(Request $request)
@@ -87,6 +91,7 @@ class SuppliersController extends Controller
     path: "/api/suppliers/{supplier}",
     tags: ["Suppliers"],
     summary: "Get single supplier",
+    security: [["sanctum" => []]],
     parameters: [
         new OA\Parameter(
             name: "supplier",
@@ -111,10 +116,8 @@ class SuppliersController extends Controller
                 ]
             )
         ),
-        new OA\Response(
-            response: 404,
-            description: "Supplier not found"
-        )
+        new OA\Response(response: 403, description: "No Permission"),
+        new OA\Response(response: 404,description: "Supplier not found")
     ]
 )]
 public function show(string $supplier)
@@ -126,6 +129,7 @@ public function show(string $supplier)
         path: "/api/suppliers/{supplier}",
         tags: ["Suppliers"],
         summary: "Update supplier",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "supplier",
@@ -149,6 +153,7 @@ public function show(string $supplier)
         ),
         responses: [
             new OA\Response(response: 200, description: "Supplier updated"),
+            new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]
     )]
@@ -177,6 +182,7 @@ public function show(string $supplier)
         path: "/api/suppliers/{supplier}",
         tags: ["Suppliers"],
         summary: "Delete supplier",
+        security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "supplier",
@@ -187,6 +193,7 @@ public function show(string $supplier)
         ],
         responses: [
             new OA\Response(response: 200, description: "Supplier deleted"),
+            new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]
     )]
