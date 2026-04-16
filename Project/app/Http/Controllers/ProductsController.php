@@ -25,8 +25,13 @@ class ProductsController extends Controller
                         new OA\Property(property: "id", type: "integer"),
                         new OA\Property(property: "name", type: "string"),
                         new OA\Property(property: "sku", type: "string"),
+                        new OA\Property(property: "description", type: "string"),
                         new OA\Property(property: "unit_price", type: "number"),
                         new OA\Property(property: "stock_quantity", type: "integer"),
+                        new OA\Property(property: "is_active", type: "boolean"),
+                        new OA\Property(property: "deleted_at", type: "string"),
+                        new OA\Property(property: "created_at", type: "string"),
+                        new OA\Property(property: "updated_at", type: "string"),
                     ]
                 )
             )
@@ -64,6 +69,7 @@ class ProductsController extends Controller
                 new OA\Property(property: "unit_price", type: "number"),
                 new OA\Property(property: "stock_quantity", type: "integer"),
                 new OA\Property(property: "is_active", type: "boolean")
+
             ]
         )
     ),
@@ -107,7 +113,27 @@ class ProductsController extends Controller
         )
     ],
     responses: [
-        new OA\Response(response: 200,description: "Product found"),
+        new OA\Response(
+            response: 200,
+            description: "Product Found",
+            content: new OA\JsonContent(
+                type: "array",
+                items: new OA\Items(
+                    properties: [
+                        new OA\Property(property: "id", type: "integer"),
+                        new OA\Property(property: "name", type: "string"),
+                        new OA\Property(property: "sku", type: "string"),
+                        new OA\Property(property: "description", type: "string"),
+                        new OA\Property(property: "unit_price", type: "number"),
+                        new OA\Property(property: "stock_quantity", type: "integer"),
+                        new OA\Property(property: "is_active", type: "boolean"),
+                        new OA\Property(property: "deleted_at", type: "string"),
+                        new OA\Property(property: "created_at", type: "string"),
+                        new OA\Property(property: "updated_at", type: "string"),
+                    ]
+                )
+            )
+        ),
         new OA\Response(response: 404, description: "Not found"),
         new OA\Response(response: 403, description: "No Permission"),
     ]
@@ -252,4 +278,6 @@ class ProductsController extends Controller
             'message' => 'Product restored'
         ]);
     }
+
+    #
 }

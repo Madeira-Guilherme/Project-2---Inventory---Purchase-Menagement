@@ -32,6 +32,9 @@ class SuppliersController extends Controller
                             new OA\Property(property: "phone", type: "string"),
                             new OA\Property(property: "address", type: "string"),
                             new OA\Property(property: "is_active", type: "boolean"),
+                            new OA\Property(property: "deleted_at", type: "string"),
+                            new OA\Property(property: "created_at", type: "string"),
+                            new OA\Property(property: "updated_at", type: "string"),
                         ]
                     )
                 )
@@ -103,17 +106,23 @@ class SuppliersController extends Controller
     responses: [
         new OA\Response(
             response: 200,
-            description: "Supplier found",
+            description: "List of suppliers",
             content: new OA\JsonContent(
-                properties: [
-                    new OA\Property(property: "id", type: "integer"),
-                    new OA\Property(property: "company_name", type: "string"),
-                    new OA\Property(property: "contact_name", type: "string"),
-                    new OA\Property(property: "email", type: "string"),
-                    new OA\Property(property: "phone", type: "string"),
-                    new OA\Property(property: "address", type: "string"),
-                    new OA\Property(property: "is_active", type: "boolean"),
-                ]
+                type: "array",
+                items: new OA\Items(
+                    properties: [
+                        new OA\Property(property: "id", type: "integer"),
+                        new OA\Property(property: "company_name", type: "string"),
+                        new OA\Property(property: "contact_name", type: "string"),
+                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: "phone", type: "string"),
+                        new OA\Property(property: "address", type: "string"),
+                        new OA\Property(property: "is_active", type: "boolean"),
+                        new OA\Property(property: "deleted_at", type: "string"),
+                        new OA\Property(property: "created_at", type: "string"),
+                        new OA\Property(property: "updated_at", type: "string"),
+                    ]
+                )
             )
         ),
         new OA\Response(response: 403, description: "No Permission"),

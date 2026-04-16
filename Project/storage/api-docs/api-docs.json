@@ -226,11 +226,26 @@
                                             "sku": {
                                                 "type": "string"
                                             },
+                                            "description": {
+                                                "type": "string"
+                                            },
                                             "unit_price": {
                                                 "type": "number"
                                             },
                                             "stock_quantity": {
                                                 "type": "integer"
+                                            },
+                                            "is_active": {
+                                                "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
                                             }
                                         },
                                         "type": "object"
@@ -322,7 +337,49 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Product found"
+                        "description": "Product Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "sku": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "unit_price": {
+                                                "type": "number"
+                                            },
+                                            "stock_quantity": {
+                                                "type": "integer"
+                                            },
+                                            "is_active": {
+                                                "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not found"
@@ -523,6 +580,15 @@
                                             },
                                             "created_by": {
                                                 "type": "integer"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
                                             }
                                         },
                                         "type": "object"
@@ -634,11 +700,57 @@
                 "tags": [
                     "Purchase Orders"
                 ],
-                "summary": "Get delivered (received) purchase orders",
+                "summary": "Get delivered purchase orders",
                 "operationId": "8e00bfbe1b3edac119ef360e03533530",
                 "responses": {
                     "200": {
-                        "description": "Delivered purchase orders"
+                        "description": "List of delivered orders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "supplier_id": {
+                                                "type": "integer"
+                                            },
+                                            "order_number": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            },
+                                            "total_amount": {
+                                                "type": "number"
+                                            },
+                                            "ordered_at": {
+                                                "type": "string"
+                                            },
+                                            "received_at": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "created_by": {
+                                                "type": "integer"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -667,7 +779,53 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Purchase orders by supplier"
+                        "description": "List of purchase orders by supplier",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "supplier_id": {
+                                                "type": "integer"
+                                            },
+                                            "order_number": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            },
+                                            "total_amount": {
+                                                "type": "number"
+                                            },
+                                            "ordered_at": {
+                                                "type": "string"
+                                            },
+                                            "received_at": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "created_by": {
+                                                "type": "integer"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -696,7 +854,53 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Purchase order found"
+                        "description": "Purchase Orders Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "supplier_id": {
+                                                "type": "integer"
+                                            },
+                                            "order_number": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            },
+                                            "total_amount": {
+                                                "type": "number"
+                                            },
+                                            "ordered_at": {
+                                                "type": "string"
+                                            },
+                                            "received_at": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "created_by": {
+                                                "type": "integer"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "No Permission"
@@ -1010,6 +1214,15 @@
                                             },
                                             "is_active": {
                                                 "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
                                             }
                                         },
                                         "type": "object"
@@ -1101,34 +1314,46 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Supplier found",
+                        "description": "List of suppliers",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "company_name": {
+                                                "type": "string"
+                                            },
+                                            "contact_name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            },
+                                            "is_active": {
+                                                "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
                                         },
-                                        "company_name": {
-                                            "type": "string"
-                                        },
-                                        "contact_name": {
-                                            "type": "string"
-                                        },
-                                        "email": {
-                                            "type": "string"
-                                        },
-                                        "phone": {
-                                            "type": "string"
-                                        },
-                                        "address": {
-                                            "type": "string"
-                                        },
-                                        "is_active": {
-                                            "type": "boolean"
-                                        }
-                                    },
-                                    "type": "object"
+                                        "type": "object"
+                                    }
                                 }
                             }
                         }

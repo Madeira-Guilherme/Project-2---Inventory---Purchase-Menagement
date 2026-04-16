@@ -34,6 +34,9 @@ class PurchaseOrdersController extends Controller
                             new OA\Property(property: "ordered_at", type: "string"),
                             new OA\Property(property: "received_at", type: "string", nullable: true),
                             new OA\Property(property: "created_by", type: "integer"),
+                            new OA\Property(property: "deleted_at", type: "string"),
+                            new OA\Property(property: "created_at", type: "string"),
+                            new OA\Property(property: "updated_at", type: "string"),
                         ]
                     )
                 )
@@ -50,10 +53,31 @@ class PurchaseOrdersController extends Controller
     #[OA\Get(
         path: "/api/purchaseorders/delivered",
         tags: ["Purchase Orders"],
-        summary: "Get delivered (received) purchase orders",
+        summary: "Get delivered purchase orders",
         security: [["sanctum" => []]],
         responses: [
-            new OA\Response(response: 200, description: "Delivered purchase orders")
+            new OA\Response(
+                response: 200,
+                description: "List of delivered orders",
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(
+                        properties: [
+                            new OA\Property(property: "id", type: "integer"),
+                            new OA\Property(property: "supplier_id", type: "integer"),
+                            new OA\Property(property: "order_number", type: "string"),
+                            new OA\Property(property: "status", type: "string"),
+                            new OA\Property(property: "total_amount", type: "number"),
+                            new OA\Property(property: "ordered_at", type: "string"),
+                            new OA\Property(property: "received_at", type: "string", nullable: true),
+                            new OA\Property(property: "created_by", type: "integer"),
+                            new OA\Property(property: "deleted_at", type: "string"),
+                            new OA\Property(property: "created_at", type: "string"),
+                            new OA\Property(property: "updated_at", type: "string"),
+                        ]
+                    )
+                )
+            )
         ]
     )]
     public function delivered()
@@ -79,7 +103,28 @@ class PurchaseOrdersController extends Controller
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: "Purchase orders by supplier")
+            new OA\Response(
+                response: 200,
+                description: "List of purchase orders by supplier",
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(
+                        properties: [
+                            new OA\Property(property: "id", type: "integer"),
+                            new OA\Property(property: "supplier_id", type: "integer"),
+                            new OA\Property(property: "order_number", type: "string"),
+                            new OA\Property(property: "status", type: "string"),
+                            new OA\Property(property: "total_amount", type: "number"),
+                            new OA\Property(property: "ordered_at", type: "string"),
+                            new OA\Property(property: "received_at", type: "string", nullable: true),
+                            new OA\Property(property: "created_by", type: "integer"),
+                            new OA\Property(property: "deleted_at", type: "string"),
+                            new OA\Property(property: "created_at", type: "string"),
+                            new OA\Property(property: "updated_at", type: "string"),
+                        ]
+                    )
+                )
+            )
         ]
     )]
     public function bySupplier($supplier_id)
@@ -205,7 +250,28 @@ public function store(Request $request)
             )
         ],
         responses: [
-            new OA\Response(response: 200,description: "Purchase order found"),
+            new OA\Response(
+                response: 200,
+                description: "Purchase Orders Found",
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(
+                        properties: [
+                            new OA\Property(property: "id", type: "integer"),
+                            new OA\Property(property: "supplier_id", type: "integer"),
+                            new OA\Property(property: "order_number", type: "string"),
+                            new OA\Property(property: "status", type: "string"),
+                            new OA\Property(property: "total_amount", type: "number"),
+                            new OA\Property(property: "ordered_at", type: "string"),
+                            new OA\Property(property: "received_at", type: "string", nullable: true),
+                            new OA\Property(property: "created_by", type: "integer"),
+                            new OA\Property(property: "deleted_at", type: "string"),
+                            new OA\Property(property: "created_at", type: "string"),
+                            new OA\Property(property: "updated_at", type: "string"),
+                        ]
+                    )
+                )
+            ),
             new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404,description: "Not found")
         ]
