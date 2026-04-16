@@ -40,24 +40,20 @@ class DatabaseSeeder extends Seeder
         $werehouseop->givePermissionTo('create products');
 
         // The Good Stuff -------------------------------
+
+        User::factory()->create(['name' => 'Admin', 'email' => 'Admin@gmail.com'])
+            ->each(function ($user){ $user->assignRole('admin');});
+
+        User::factory()->create(['name' => 'WareHouse','email' => 'warehouseop@gmail.com'])
+            ->each(function ($user){ $user->assignRole('warehouseoperator');});
+
+
+        User::factory()->create(['name' => 'Purchaser','email' => 'purchaser@gmail.com',])
+            ->each(function ($user){ $user->assignRole('purchaser');});
+
         Products::factory(10)->create();
         Suppliers::factory(10)->create();
         PurchaseOrders::factory(10)->create();
         PurchaseOrdersItems::factory(10)->create();
-        User::factory()
-        ->count(5)
-        ->create()
-        ->each(function ($user)
-        { $user->assignRole(
-             fake()->randomElement(['purchaser', 'warehouseoperator'])
-            );
-        });
-
-        User::factory()
-        ->count(1)
-        ->create()
-        ->each(function ($user)
-        { $user->assignRole('admin');
-        });
     }
 }
