@@ -47,6 +47,50 @@ class PurchaseOrdersController extends Controller
         );
     }
 
+    #[OA\Get(
+        path: "/api/purchaseorders/delivered",
+        tags: ["Purchase Orders"],
+        summary: "Get delivered (received) purchase orders",
+        security: [["sanctum" => []]],
+        responses: [
+            new OA\Response(response: 200, description: "Delivered purchase orders")
+        ]
+    )]
+    public function delivered()
+    {
+        $orders = PurchaseOrders::with('items.product')
+            ->where('status', 'received')
+            ->get();
+
+        return response()->json($orders);
+    }
+
+    #[OA\Get(
+        path: "/api/purchaseorders/supplier/{supplier_id}",
+        tags: ["Purchase Orders"],
+        summary: "Get purchase orders by supplier",
+        security: [["sanctum" => []]],
+        parameters: [
+            new OA\Parameter(
+                name: "supplier_id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: "Purchase orders by supplier")
+        ]
+    )]
+    public function bySupplier($supplier_id)
+    {
+        $orders = PurchaseOrders::with('items.product')
+            ->where('supplier_id', $supplier_id)
+            ->get();
+
+        return response()->json($orders);
+    }
+
     #[OA\Post(
     path: "/api/purchaseorders",
     tags: ["Purchase Orders"],
@@ -445,7 +489,7 @@ public function store(Request $request)
         }
 
         if (in_array($purchase->status, [
-            "recieved",
+            "received",
             "cancelled"
         ])) {
             return response()->json([

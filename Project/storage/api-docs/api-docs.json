@@ -629,6 +629,54 @@
                 ]
             }
         },
+        "/api/purchaseorders/delivered": {
+            "get": {
+                "tags": [
+                    "Purchase Orders"
+                ],
+                "summary": "Get delivered (received) purchase orders",
+                "operationId": "8e00bfbe1b3edac119ef360e03533530",
+                "responses": {
+                    "200": {
+                        "description": "Delivered purchase orders"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/purchaseorders/supplier/{supplier_id}": {
+            "get": {
+                "tags": [
+                    "Purchase Orders"
+                ],
+                "summary": "Get purchase orders by supplier",
+                "operationId": "6b987476279d5d52f1e244a302f5aa92",
+                "parameters": [
+                    {
+                        "name": "supplier_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Purchase orders by supplier"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/purchaseorders/{purchases}": {
             "get": {
                 "tags": [
