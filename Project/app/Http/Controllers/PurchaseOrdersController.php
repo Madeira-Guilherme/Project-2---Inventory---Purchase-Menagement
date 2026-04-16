@@ -37,6 +37,7 @@ class PurchaseOrdersController extends Controller
                             new OA\Property(property: "deleted_at", type: "string"),
                             new OA\Property(property: "created_at", type: "string"),
                             new OA\Property(property: "updated_at", type: "string"),
+                            new OA\Property(property: "items", type: "object"),
                         ]
                     )
                 )

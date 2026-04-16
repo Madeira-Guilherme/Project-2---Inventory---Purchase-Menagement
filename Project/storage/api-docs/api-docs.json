@@ -589,6 +589,9 @@
                                             },
                                             "updated_at": {
                                                 "type": "string"
+                                            },
+                                            "items": {
+                                                "type": "object"
                                             }
                                         },
                                         "type": "object"
