@@ -84,3 +84,13 @@ php artisan db:seed
 Após subir o projeto, acede:
 
 http://localhost:8000/api/documentation
+
+## Contas
+Admin@gmail.com 
+password
+
+warehouseop@gmail.com
+password
+
+purchaser@gmail.com
+password
