@@ -116,9 +116,11 @@ public function index(Request $request)
         )
     ),
     responses: [
+        new OA\Response(response: 200,description: "Invalid Input"),
         new OA\Response(response: 201,description: "Purchase order created successfully"),
         new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 422,description: "Validation error")
+
     ]
 )]
 public function store(Request $request)
@@ -136,8 +138,7 @@ public function store(Request $request)
         'items.*.quantity' => 'required|integer|min:1',
     ]);
 
-    $purchase = DB::transaction(function () use ($validated) {
-
+   $purchase = DB::transaction(function () use ($validated) {
     $purchase = PurchaseOrders::create([
         'supplier_id' => $validated['supplier_id'],
         'order_number' => $validated['order_number'],
@@ -339,7 +340,8 @@ public function store(Request $request)
             new OA\Response(
                 response: 404,
                 description: "Purchase order not found"
-            )
+            ),
+
         ]
     )]
     public function restore($id)
@@ -502,3 +504,50 @@ public function store(Request $request)
         ]);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
