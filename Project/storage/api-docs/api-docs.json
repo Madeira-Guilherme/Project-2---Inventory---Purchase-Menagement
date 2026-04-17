@@ -547,6 +547,38 @@
                 ],
                 "summary": "Get all purchase orders",
                 "operationId": "24456f04271cbaae655249211564e3a8",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "supplier_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "from_date",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "to_date",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of purchase orders",
@@ -689,146 +721,6 @@
                     },
                     "422": {
                         "description": "Validation error"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/purchaseorders/delivered": {
-            "get": {
-                "tags": [
-                    "Purchase Orders"
-                ],
-                "summary": "Get delivered purchase orders",
-                "operationId": "8e00bfbe1b3edac119ef360e03533530",
-                "responses": {
-                    "200": {
-                        "description": "List of delivered orders",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "supplier_id": {
-                                                "type": "integer"
-                                            },
-                                            "order_number": {
-                                                "type": "string"
-                                            },
-                                            "status": {
-                                                "type": "string"
-                                            },
-                                            "total_amount": {
-                                                "type": "number"
-                                            },
-                                            "ordered_at": {
-                                                "type": "string"
-                                            },
-                                            "received_at": {
-                                                "type": "string",
-                                                "nullable": true
-                                            },
-                                            "created_by": {
-                                                "type": "integer"
-                                            },
-                                            "deleted_at": {
-                                                "type": "string"
-                                            },
-                                            "created_at": {
-                                                "type": "string"
-                                            },
-                                            "updated_at": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/purchaseorders/supplier/{supplier_id}": {
-            "get": {
-                "tags": [
-                    "Purchase Orders"
-                ],
-                "summary": "Get purchase orders by supplier",
-                "operationId": "6b987476279d5d52f1e244a302f5aa92",
-                "parameters": [
-                    {
-                        "name": "supplier_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of purchase orders by supplier",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "supplier_id": {
-                                                "type": "integer"
-                                            },
-                                            "order_number": {
-                                                "type": "string"
-                                            },
-                                            "status": {
-                                                "type": "string"
-                                            },
-                                            "total_amount": {
-                                                "type": "number"
-                                            },
-                                            "ordered_at": {
-                                                "type": "string"
-                                            },
-                                            "received_at": {
-                                                "type": "string",
-                                                "nullable": true
-                                            },
-                                            "created_by": {
-                                                "type": "integer"
-                                            },
-                                            "deleted_at": {
-                                                "type": "string"
-                                            },
-                                            "created_at": {
-                                                "type": "string"
-                                            },
-                                            "updated_at": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
                     }
                 },
                 "security": [

@@ -42,8 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/purchaseorders', [PurchaseOrdersController::class, 'store'])
         ->middleware('permission:create orders');
     Route::get('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'show']);
-    Route::get('/purchaseorders/delivered', [PurchaseOrdersController::class, 'delivered']);
-    Route::get('/purchaseorders/supplier/{supplier_id}', [PurchaseOrdersController::class, 'bySupplier']);
     Route::put('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'update'])
         ->middleware('permission:update orders');
     Route::delete('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'destroy']);
