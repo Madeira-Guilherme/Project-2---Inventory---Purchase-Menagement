@@ -23,35 +23,50 @@ class PurchaseOrdersController extends Controller
             new OA\Parameter(name: "supplier_id", in: "query", schema: new OA\Schema(type: "integer")),
             new OA\Parameter(name: "from_date", in: "query", schema: new OA\Schema(type: "string", format: "date")),
             new OA\Parameter(name: "to_date", in: "query", schema: new OA\Schema(type: "string", format: "date")),
+            new OA\Parameter(name: "per_page", in: "query",schema: new OA\Schema(type: "integer", default: 15)),
+            new OA\Parameter(name: "page", in: "query", schema: new OA\Schema(type: "integer", default: 1)),
         ],
         responses: [
             new OA\Response(
                 response: 200,
                 description: "List of purchase orders",
                 content: new OA\JsonContent(
-                    type: "array",
-                    items: new OA\Items(
-                        properties: [
-                            new OA\Property(property: "id", type: "integer"),
-                            new OA\Property(property: "supplier_id", type: "integer"),
-                            new OA\Property(property: "order_number", type: "string"),
-                            new OA\Property(property: "status", type: "string"),
-                            new OA\Property(property: "total_amount", type: "number"),
-                            new OA\Property(property: "ordered_at", type: "string"),
-                            new OA\Property(property: "received_at", type: "string", nullable: true),
-                            new OA\Property(property: "created_by", type: "integer"),
-                            new OA\Property(property: "deleted_at", type: "string"),
-                            new OA\Property(property: "created_at", type: "string"),
-                            new OA\Property(property: "updated_at", type: "string"),
-                            new OA\Property(property: "items", type: "object"),
-                        ]
-                    )
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "current_page", type: "integer"),
+                        new OA\Property(property: "data", type: "array",
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: "id", type: "integer"),
+                                    new OA\Property(property: "supplier_id", type: "integer"),
+                                    new OA\Property(property: "order_number", type: "string"),
+                                    new OA\Property(property: "status", type: "string"),
+                                    new OA\Property(property: "total_amount", type: "number"),
+                                    new OA\Property(property: "ordered_at", type: "string"),
+                                    new OA\Property(property: "received_at", type: "string", nullable: true),
+                                    new OA\Property(property: "created_by", type: "integer"),
+                                    new OA\Property(property: "deleted_at", type: "string"),
+                                    new OA\Property(property: "created_at", type: "string"),
+                                    new OA\Property(property: "updated_at", type: "string"),
+                                    new OA\Property(property: "items", type: "object"),
+                                ]
+                            )
+                        ),
+                        new OA\Property(property: "last_page", type: "integer"),
+                        new OA\Property(property: "per_page", type: "integer"),
+                        new OA\Property(property: "total", type: "integer"),
+                    ]
                 )
             )
         ]
     )]
 public function index(Request $request)
 {
+    $perPage = (int) $request->query('per_page', 15);
+
+    // safety cap (recommended)
+    $perPage = $perPage > 0 ? min($perPage, 20) : 15;
+
     $orders = PurchaseOrders::with('items.product')
         ->when($request->status, fn($q) => $q->where('status', $request->status))
         ->when($request->supplier_id, fn($q) => $q->where('supplier_id', $request->supplier_id))
@@ -60,7 +75,7 @@ public function index(Request $request)
         ->when($request->created_by, fn($q) => $q->where('created_by', $request->created_by))
         ->when($request->min_total, fn($q) => $q->where('total_amount', '>=', $request->min_total))
         ->when($request->max_total, fn($q) => $q->where('total_amount', '<=', $request->max_total))
-        ->get();
+        ->paginate($perPage);
 
     return response()->json($orders);
 }
@@ -504,10 +519,6 @@ public function store(Request $request)
         ]);
     }
 }
-
-
-
-
 
 
 

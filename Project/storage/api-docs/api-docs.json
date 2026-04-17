@@ -577,6 +577,22 @@
                             "type": "string",
                             "format": "date"
                         }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -585,49 +601,66 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "supplier_id": {
-                                                "type": "integer"
-                                            },
-                                            "order_number": {
-                                                "type": "string"
-                                            },
-                                            "status": {
-                                                "type": "string"
-                                            },
-                                            "total_amount": {
-                                                "type": "number"
-                                            },
-                                            "ordered_at": {
-                                                "type": "string"
-                                            },
-                                            "received_at": {
-                                                "type": "string",
-                                                "nullable": true
-                                            },
-                                            "created_by": {
-                                                "type": "integer"
-                                            },
-                                            "deleted_at": {
-                                                "type": "string"
-                                            },
-                                            "created_at": {
-                                                "type": "string"
-                                            },
-                                            "updated_at": {
-                                                "type": "string"
-                                            },
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
                                             "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "supplier_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "order_number": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "total_amount": {
+                                                        "type": "number"
+                                                    },
+                                                    "ordered_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "received_at": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "created_by": {
+                                                        "type": "integer"
+                                                    },
+                                                    "deleted_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
                                                 "type": "object"
                                             }
                                         },
-                                        "type": "object"
-                                    }
+                                        "last_page": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
