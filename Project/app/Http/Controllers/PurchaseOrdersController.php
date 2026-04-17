@@ -131,7 +131,6 @@ public function index(Request $request)
         )
     ),
     responses: [
-        new OA\Response(response: 200,description: "Invalid Input"),
         new OA\Response(response: 201,description: "Purchase order created successfully"),
         new OA\Response(response: 403, description: "No Permission"),
         new OA\Response(response: 422,description: "Validation error")

@@ -746,9 +746,6 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Invalid Input"
-                    },
                     "201": {
                         "description": "Purchase order created successfully"
                     },

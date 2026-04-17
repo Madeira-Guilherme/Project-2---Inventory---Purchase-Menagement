@@ -69,6 +69,7 @@ class SuppliersController extends Controller
         responses: [
             new OA\Response(response: 201, description: "Supplier created"),
             new OA\Response(response: 403, description: "No Permission"),
+            new OA\Response(response: 422,description: "Validation error")
         ]
     )]
     public function store(Request $request)
