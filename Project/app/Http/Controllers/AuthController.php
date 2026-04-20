@@ -146,16 +146,25 @@ class AuthController extends Controller
                 response: 401,
                 description: "Unauthenticated"
             )
+
         ]
     )]
     public function logout(Request $request)
-    {
-        $request->user()?->currentAccessToken()?->delete();
+{
+    $token = $request->user()?->currentAccessToken();
 
+    if (!$token) {
         return response()->json([
-            'message' => 'Logged out'
-        ]);
+            'message' => 'No active token'
+        ], 401);
     }
+
+    $token->delete();
+
+    return response()->json([
+        'message' => 'Logged out'
+    ]);
+}
 
 #[OA\Get(
     path: "/api/me",

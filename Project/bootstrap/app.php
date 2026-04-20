@@ -18,8 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ]);
     })
+
+    ->withMiddleware(function ($middleware) {
+            $middleware->redirectGuestsTo(null);
+        })
+
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+
     })->create();
 
 

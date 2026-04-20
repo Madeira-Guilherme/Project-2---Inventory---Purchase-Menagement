@@ -25,17 +25,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products', [ProductsController::class, 'index']);
     Route::get('/products/{product}', [ProductsController::class, 'show']);
     Route::post('/products', [ProductsController::class, 'store'])
-        ->middleware('permission:create products');
+        ->middleware('permission:update products');
     Route::put('/products/{product}', [ProductsController::class, 'update'])
         ->middleware('permission:update products');
-    Route::delete('/products/{product}', [ProductsController::class, 'destroy']);
+    Route::delete('/products/{product}', [ProductsController::class, 'destroy'])
+        ->middleware('permission:delete products');
     Route::post('/products/{id}/restore', [ProductsController::class, 'restore']);
 
     Route::get('/suppliers', [SuppliersController::class, 'index']);
     Route::post('/suppliers', [SuppliersController::class, 'store']);
     Route::get('/suppliers/{supplier}', [SuppliersController::class, 'show']);
     Route::put('/suppliers/{supplier}', [SuppliersController::class, 'update']);
-    Route::delete('/suppliers/{supplier}', [SuppliersController::class, 'destroy']);
+    Route::delete('/suppliers/{supplier}', [SuppliersController::class, 'destroy'])
+        ->middleware('permission:delete suppliers');
     Route::post('/suppliers/{id}/restore', [SuppliersController::class, 'restore']);
 
     Route::get('/purchaseorders', [PurchaseOrdersController::class, 'index']);
@@ -44,7 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'show']);
     Route::put('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'update'])
         ->middleware('permission:update orders');
-    Route::delete('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'destroy']);
+    Route::delete('/purchaseorders/{purchases}', [PurchaseOrdersController::class, 'destroy'])
+        ->middleware('permission:delete orders');
     Route::post('/purchaseorders/{id}/restore', [PurchaseOrdersController::class, 'restore']);
 
     Route::post('/purchaseorders/{id}/submit', [PurchaseOrdersController::class, 'submit'])

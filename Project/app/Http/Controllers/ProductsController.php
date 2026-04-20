@@ -61,7 +61,6 @@ class ProductsController extends Controller
     path: "/api/products",
     tags: ["Products"],
     summary: "Create product",
-    security: [["sanctum" => []]],
     requestBody: new OA\RequestBody(
         required: true,
         content: new OA\JsonContent(
@@ -79,7 +78,10 @@ class ProductsController extends Controller
     ),
     responses: [
         new OA\Response(response: 201, description: "Created"),
+        new OA\Response(response: 401, description: "Unauthorized"),
         new OA\Response(response: 403, description: "No Permission"),
+        new OA\Response(response: 422, description: "Validation error"),
+
     ]
 )]
     public function store(Request $request)
@@ -90,10 +92,9 @@ class ProductsController extends Controller
             'description' => 'nullable|string',
             'unit_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'required|boolean',
         ]);
-
-        $validated['is_active'] = $request->boolean('is_active');
+        dd($request->all());
 
         $product = Products::create($validated);
 

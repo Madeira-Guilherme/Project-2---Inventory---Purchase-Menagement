@@ -31,6 +31,9 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'mark orders']);
         Permission::create(['name' => 'update products']);
         Permission::create(['name' => 'create products']);
+        Permission::create(['name' => 'delete products']);
+        Permission::create(['name' => 'delete suppliers']);
+        Permission::create(['name' => 'delete orders']);
 
         $admin->givePermissionTo(Permission::all());
         $purchaser->givePermissionTo('create orders');
