@@ -100,6 +100,12 @@ class AuthController extends Controller
             new OA\Response(
                 response: 401,
                 description: "Invalid credentials"
+            ),
+
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
             )
         ]
     )]
