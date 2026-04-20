@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Tag(
     name: "Authentication",
-    description: "Authentication"
+    description: "Login and Register"
 )]
 class AuthController extends Controller
 {
@@ -18,6 +18,7 @@ class AuthController extends Controller
         path: "/api/register",
         tags: ["Authentication"],
         summary: "Register a new user",
+        security: [],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
@@ -74,6 +75,7 @@ class AuthController extends Controller
         path: "/api/login",
         tags: ["Authentication"],
         summary: "Login user",
+        security: [],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(

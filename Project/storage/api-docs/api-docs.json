@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My Laravel API",
-        "description": "API documentation",
+        "title": "Inventory & Purchase Management API",
+        "description": "Project 2",
         "version": "1.0.0"
     },
     "servers": [
@@ -72,7 +72,8 @@
                     "422": {
                         "description": "Validation error"
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/login": {
@@ -130,7 +131,8 @@
                     "401": {
                         "description": "Invalid credentials"
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/logout": {
@@ -1214,6 +1216,9 @@
                     },
                     "403": {
                         "description": "No Permission"
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 },
                 "security": [
@@ -1462,19 +1467,19 @@
     "tags": [
         {
             "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Purchase Orders",
-            "description": "Purchase Orders"
-        },
-        {
-            "name": "Suppliers",
-            "description": "Suppliers"
+            "description": "Login and Register"
         },
         {
             "name": "Products",
-            "description": "Products"
+            "description": "Manage products, including creation and updates"
+        },
+        {
+            "name": "Purchase Orders",
+            "description": "Manage purchase orders, including creation, updates, and status monitoring."
+        },
+        {
+            "name": "Suppliers",
+            "description": "Manage suppliers, including creation and updates"
         }
     ]
 }

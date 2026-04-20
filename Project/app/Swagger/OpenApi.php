@@ -5,9 +5,9 @@ namespace App\Swagger;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(
-    title: "My Laravel API",
+    title: "Inventory & Purchase Management API",
     version: "1.0.0",
-    description: "API documentation"
+    description: "Project 2"
 )]
 
 #[OA\Server(

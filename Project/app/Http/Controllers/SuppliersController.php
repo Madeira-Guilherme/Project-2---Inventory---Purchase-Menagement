@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Tag(
     name: "Suppliers",
-    description: "Suppliers"
+    description: "Manage suppliers, including creation and updates"
 )]
 class SuppliersController extends Controller
 {

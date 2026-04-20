@@ -6,6 +6,10 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
+#[OA\Tag(
+    name: "Products",
+    description: "Manage products, including creation and updates"
+)]
 class ProductsController extends Controller
 {
 

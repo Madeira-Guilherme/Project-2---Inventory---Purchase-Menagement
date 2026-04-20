@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 #[OA\Tag(
     name: "Purchase Orders",
-    description: "Purchase Orders"
+    description: "Manage purchase orders, including creation, updates, and status monitoring."
 )]
 class PurchaseOrdersController extends Controller
 {
