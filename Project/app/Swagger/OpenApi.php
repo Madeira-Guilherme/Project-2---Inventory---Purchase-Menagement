@@ -16,14 +16,13 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\SecurityScheme(
-    securityScheme: "bearerAuth",
+    securityScheme: "sanctum",
     type: "http",
-    scheme: "bearer",
-    bearerFormat: "JWT"
+    scheme: "bearer"
 )]
 
 #[OA\OpenApi(
-    security: [["bearerAuth" => []]]
+    security: [["sanctum" => []]]
 )]
 
 class OpenApi {}

@@ -92,9 +92,8 @@ class ProductsController extends Controller
             'description' => 'nullable|string',
             'unit_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'is_active' => 'required|boolean',
+            'is_active' => 'boolean',
         ]);
-        dd($request->all());
 
         $product = Products::create($validated);
 
