@@ -21,8 +21,8 @@ class PurchaseOrdersController extends Controller
         parameters: [
             new OA\Parameter(name: "status", in: "query", schema: new OA\Schema(type: "string")),
             new OA\Parameter(name: "supplier_id", in: "query", schema: new OA\Schema(type: "integer")),
-            new OA\Parameter(name: "from_date", in: "query", schema: new OA\Schema(type: "string", format: "date")),
-            new OA\Parameter(name: "to_date", in: "query", schema: new OA\Schema(type: "string", format: "date")),
+            new OA\Parameter(name: "from_date", in: "query", schema: new OA\Schema(type: "date", format: "date")),
+            new OA\Parameter(name: "to_date", in: "query", schema: new OA\Schema(type: "date", format: "date")),
             new OA\Parameter(name: "per_page", in: "query",schema: new OA\Schema(type: "integer", default: 15)),
             new OA\Parameter(name: "page", in: "query", schema: new OA\Schema(type: "integer", default: 1)),
         ],
@@ -45,9 +45,9 @@ class PurchaseOrdersController extends Controller
                                     new OA\Property(property: "ordered_at", type: "string"),
                                     new OA\Property(property: "received_at", type: "string", nullable: true),
                                     new OA\Property(property: "created_by", type: "integer"),
-                                    new OA\Property(property: "deleted_at", type: "string"),
-                                    new OA\Property(property: "created_at", type: "string"),
-                                    new OA\Property(property: "updated_at", type: "string"),
+                                    new OA\Property(property: "deleted_at", type: "date "),
+                                    new OA\Property(property: "created_at", type: "date"),
+                                    new OA\Property(property: "updated_at", type: "date"),
                                     new OA\Property(property: "items", type: "object"),
                                 ]
                             )
@@ -402,21 +402,6 @@ public function store(Request $request)
             ], 400);
         }
 
-        $purchase->load('items.product');
-
-        foreach ($purchase->items as $item) {
-
-            $product = $item->product;
-
-                if ($product) {
-
-                        if ($product->stock_quantity < $item->quantity) {
-                            throw new \Exception("Not enough stock for product ID {$product->id}");
-                        }
-
-                        $product->decrement('stock_quantity', $item->quantity);
-                    }
-                }
         $purchase->update([
             'status' => "submitted"
         ]);
@@ -460,6 +445,22 @@ public function store(Request $request)
                 'message' => 'Only submitted orders can be received'
             ], 400);
         }
+
+        $purchase->load('items.product');
+
+        foreach ($purchase->items as $item) {
+
+            $product = $item->product;
+
+                if ($product) {
+
+                        //if ($product->stock_quantity < $item->quantity) {
+                      //      throw new \Exception("Not enough stock for product ID {$product->id}");
+                      //  }
+
+                        $product->increment('stock_quantity', $item->quantity);
+                    }
+                }
 
         $purchase->update([
             'status' => "received",

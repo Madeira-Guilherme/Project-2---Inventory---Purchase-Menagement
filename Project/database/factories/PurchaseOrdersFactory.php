@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\PurchaseOrders;
 use App\Models\Suppliers;
 use App\Models\User;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -38,5 +39,10 @@ class PurchaseOrdersFactory extends Factory
 
             'created_by' => User::factory(),
         ];
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
     }
 }
