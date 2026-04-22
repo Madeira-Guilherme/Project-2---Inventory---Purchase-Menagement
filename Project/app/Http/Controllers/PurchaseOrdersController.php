@@ -42,8 +42,8 @@ class PurchaseOrdersController extends Controller
                                     new OA\Property(property: "order_number", type: "string"),
                                     new OA\Property(property: "status", type: "string"),
                                     new OA\Property(property: "total_amount", type: "number"),
-                                    new OA\Property(property: "ordered_at", type: "string"),
-                                    new OA\Property(property: "received_at", type: "string", nullable: true),
+                                    new OA\Property(property: "ordered_at", type: "date"),
+                                    new OA\Property(property: "received_at", type: "date", nullable: true),
                                     new OA\Property(property: "created_by", type: "integer"),
                                     new OA\Property(property: "deleted_at", type: "date "),
                                     new OA\Property(property: "created_at", type: "date"),
@@ -76,6 +76,7 @@ public function index(Request $request)
         ->when($request->min_total, fn($q) => $q->where('total_amount', '>=', $request->min_total))
         ->when($request->max_total, fn($q) => $q->where('total_amount', '<=', $request->max_total))
         ->paginate($perPage);
+
 
     return response()->json($orders);
 }

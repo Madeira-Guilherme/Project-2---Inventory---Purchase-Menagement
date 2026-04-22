@@ -18,6 +18,22 @@ class ProductsController extends Controller
     tags: ["Products"],
     summary: "Get all products",
     security: [["sanctum" => []]],
+    parameters: [
+        new OA\Parameter(
+            name: "max_stock",
+            in: "query",
+            required: false,
+            description: "Filter products by max stock quantity",
+            schema: new OA\Schema(type: "integer")
+        ),
+        new OA\Parameter(
+            name: "min_stock",
+            in: "query",
+            required: false,
+            description: "Filter products by minimum stock quantity",
+            schema: new OA\Schema(type: "integer")
+        )
+    ],
     responses: [
         new OA\Response(
             response: 200,
@@ -42,12 +58,22 @@ class ProductsController extends Controller
         )
     ]
 )]
-    public function index()
-    {
-        $products = Products::all();
+public function index(Request $request)
+{
+    $query = Products::query();
 
-        return response()->json($products);
+    if ($request->has('min_stock')) {
+    $query->where('stock_quantity', '>=', $request->min_stock);
     }
+
+    if ($request->has('max_stock')) {
+        $query->where('stock_quantity', '<=', $request->max_stock);
+    }
+
+    $products = $query->get();
+
+    return response()->json($products);
+}
 
     /**
      * Show the form for creating a new resource.

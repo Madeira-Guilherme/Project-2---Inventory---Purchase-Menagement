@@ -213,6 +213,26 @@
                 ],
                 "summary": "Get all products",
                 "operationId": "6d8ae74dcafe19c4813904d4ea9e4c57",
+                "parameters": [
+                    {
+                        "name": "max_stock",
+                        "in": "query",
+                        "description": "Filter products by max stock quantity",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "min_stock",
+                        "in": "query",
+                        "description": "Filter products by minimum stock quantity",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of products",
@@ -631,19 +651,21 @@
                                                         "type": "number"
                                                     },
                                                     "ordered_at": {
-                                                        "type": "string"
+                                                        "type": "string",
+                                                        "format": "date"
                                                     },
                                                     "received_at": {
                                                         "type": [
                                                             "string",
                                                             "null"
-                                                        ]
+                                                        ],
+                                                        "format": "date"
                                                     },
                                                     "created_by": {
                                                         "type": "integer"
                                                     },
                                                     "deleted_at": {
-                                                        "type": "string"
+                                                        "type": "date "
                                                     },
                                                     "created_at": {
                                                         "type": "string",
