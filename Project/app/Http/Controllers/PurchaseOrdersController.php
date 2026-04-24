@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PurchaseOrderResource;
 use App\Models\PurchaseOrders;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
@@ -78,7 +79,8 @@ public function index(Request $request)
         ->paginate($perPage);
 
 
-    return response()->json($orders);
+
+    return PurchaseOrderResource::collection($orders);
 }
 
     #[OA\Post(
@@ -199,22 +201,31 @@ public function store(Request $request)
                 response: 200,
                 description: "Purchase Orders Found",
                 content: new OA\JsonContent(
-                    type: "array",
-                    items: new OA\Items(
-                        properties: [
-                            new OA\Property(property: "id", type: "integer"),
-                            new OA\Property(property: "supplier_id", type: "integer"),
-                            new OA\Property(property: "order_number", type: "string"),
-                            new OA\Property(property: "status", type: "string"),
-                            new OA\Property(property: "total_amount", type: "number"),
-                            new OA\Property(property: "ordered_at", type: "string"),
-                            new OA\Property(property: "received_at", type: "string", nullable: true),
-                            new OA\Property(property: "created_by", type: "integer"),
-                            new OA\Property(property: "deleted_at", type: "string"),
-                            new OA\Property(property: "created_at", type: "string"),
-                            new OA\Property(property: "updated_at", type: "string"),
-                        ]
-                    )
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "current_page", type: "integer"),
+                        new OA\Property(property: "data", type: "array",
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: "id", type: "integer"),
+                                    new OA\Property(property: "supplier_id", type: "integer"),
+                                    new OA\Property(property: "order_number", type: "string"),
+                                    new OA\Property(property: "status", type: "string"),
+                                    new OA\Property(property: "total_amount", type: "number"),
+                                    new OA\Property(property: "ordered_at", type: "date"),
+                                    new OA\Property(property: "received_at", type: "date", nullable: true),
+                                    new OA\Property(property: "created_by", type: "integer"),
+                                    new OA\Property(property: "deleted_at", type: "date "),
+                                    new OA\Property(property: "created_at", type: "date"),
+                                    new OA\Property(property: "updated_at", type: "date"),
+                                    new OA\Property(property: "items", type: "object"),
+                                ]
+                            )
+                        ),
+                        new OA\Property(property: "last_page", type: "integer"),
+                        new OA\Property(property: "per_page", type: "integer"),
+                        new OA\Property(property: "total", type: "integer"),
+                    ]
                 )
             ),
             new OA\Response(response: 403, description: "No Permission"),
@@ -223,8 +234,10 @@ public function store(Request $request)
     )]
     public function show(string $purchases)
     {
-        return PurchaseOrders::with('items.product')
-            ->findOrFail($purchases);
+        $order = PurchaseOrders::with(['items.product'])
+        ->findOrFail($purchases);
+
+        return new PurchaseOrderResource($order);
     }
 
     #[OA\Put(

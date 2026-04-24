@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SuppliersResource;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
@@ -44,7 +45,7 @@ class SuppliersController extends Controller
     )]
     public function index()
     {
-        return response()->json(Suppliers::all());
+        return SuppliersResource::collection(Suppliers::all());
     }
 
     #[OA\Post(
@@ -132,7 +133,9 @@ class SuppliersController extends Controller
 )]
 public function show(string $supplier)
 {
-    return Suppliers::findOrFail($supplier);
+    $supply = Suppliers::findOrFail($supplier);
+
+        return new SuppliersResource($supply);
 }
 
     #[OA\Put(
@@ -162,7 +165,26 @@ public function show(string $supplier)
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: "Supplier updated"),
+            new OA\Response(response: 200,
+            description: "Supplier updated",
+            content: new OA\JsonContent(
+                type: "array",
+                items: new OA\Items(
+                    properties: [
+                        new OA\Property(property: "id", type: "integer"),
+                        new OA\Property(property: "company_name", type: "string"),
+                        new OA\Property(property: "contact_name", type: "string"),
+                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: "phone", type: "string"),
+                        new OA\Property(property: "address", type: "string"),
+                        new OA\Property(property: "is_active", type: "boolean"),
+                        new OA\Property(property: "deleted_at", type: "string"),
+                        new OA\Property(property: "created_at", type: "string"),
+                        new OA\Property(property: "updated_at", type: "string"),
+                    ]
+                )
+            )
+        ),
             new OA\Response(response: 403, description: "No Permission"),
             new OA\Response(response: 404, description: "Not found")
         ]

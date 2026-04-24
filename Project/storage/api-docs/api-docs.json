@@ -468,7 +468,49 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Updated"
+                        "description": "Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "sku": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "unit_price": {
+                                                "type": "number"
+                                            },
+                                            "stock_quantity": {
+                                                "type": "integer"
+                                            },
+                                            "is_active": {
+                                                "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "No Permission"
@@ -820,48 +862,72 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "supplier_id": {
-                                                "type": "integer"
-                                            },
-                                            "order_number": {
-                                                "type": "string"
-                                            },
-                                            "status": {
-                                                "type": "string"
-                                            },
-                                            "total_amount": {
-                                                "type": "number"
-                                            },
-                                            "ordered_at": {
-                                                "type": "string"
-                                            },
-                                            "received_at": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ]
-                                            },
-                                            "created_by": {
-                                                "type": "integer"
-                                            },
-                                            "deleted_at": {
-                                                "type": "string"
-                                            },
-                                            "created_at": {
-                                                "type": "string"
-                                            },
-                                            "updated_at": {
-                                                "type": "string"
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "supplier_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "order_number": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "total_amount": {
+                                                        "type": "number"
+                                                    },
+                                                    "ordered_at": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "received_at": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ],
+                                                        "format": "date"
+                                                    },
+                                                    "created_by": {
+                                                        "type": "integer"
+                                                    },
+                                                    "deleted_at": {
+                                                        "type": "date "
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
                                             }
                                         },
-                                        "type": "object"
-                                    }
+                                        "last_page": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1386,7 +1452,49 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Supplier updated"
+                        "description": "Supplier updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "company_name": {
+                                                "type": "string"
+                                            },
+                                            "contact_name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            },
+                                            "is_active": {
+                                                "type": "boolean"
+                                            },
+                                            "deleted_at": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "No Permission"
