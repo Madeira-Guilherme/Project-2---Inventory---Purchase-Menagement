@@ -108,7 +108,7 @@ public function index(Request $request)
                 new OA\Property(property: "received_at", type: "string", format: "date", nullable: true),
                 new OA\Property(property: "created_by", type: "integer", example: 1),
 
-                // 🔥 THIS is the important part
+
                 new OA\Property(
                     property: "items",
                     type: "array",

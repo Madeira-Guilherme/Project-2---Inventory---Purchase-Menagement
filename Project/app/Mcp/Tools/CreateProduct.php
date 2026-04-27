@@ -8,7 +8,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Create a new product')]
+#[Description('Create a new product for the werehouse server.')]
 class CreateProduct extends Tool
 {
     /**

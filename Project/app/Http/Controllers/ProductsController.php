@@ -148,21 +148,19 @@ public function index(Request $request)
             response: 200,
             description: "Product Found",
             content: new OA\JsonContent(
-                type: "array",
-                items: new OA\Items(
-                    properties: [
-                        new OA\Property(property: "id", type: "integer"),
-                        new OA\Property(property: "name", type: "string"),
-                        new OA\Property(property: "sku", type: "string"),
-                        new OA\Property(property: "description", type: "string"),
-                        new OA\Property(property: "unit_price", type: "number"),
-                        new OA\Property(property: "stock_quantity", type: "integer"),
-                        new OA\Property(property: "is_active", type: "boolean"),
-                        new OA\Property(property: "deleted_at", type: "string"),
-                        new OA\Property(property: "created_at", type: "string"),
-                        new OA\Property(property: "updated_at", type: "string"),
-                    ]
-                )
+                type: "object",
+                properties: [
+                    new OA\Property(property: "id", type: "integer"),
+                    new OA\Property(property: "name", type: "string"),
+                    new OA\Property(property: "sku", type: "string"),
+                    new OA\Property(property: "description", type: "string"),
+                    new OA\Property(property: "unit_price", type: "number"),
+                    new OA\Property(property: "stock_quantity", type: "integer"),
+                    new OA\Property(property: "is_active", type: "boolean"),
+                    new OA\Property(property: "deleted_at", type: "string", nullable: true),
+                    new OA\Property(property: "created_at", type: "string"),
+                    new OA\Property(property: "updated_at", type: "string"),
+                ]
             )
         ),
         new OA\Response(response: 404, description: "Not found"),

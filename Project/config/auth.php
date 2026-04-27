@@ -42,6 +42,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'mcp' => [
+        'driver' => 'session',
+        'provider' => 'users',]
     ],
 
     /*
