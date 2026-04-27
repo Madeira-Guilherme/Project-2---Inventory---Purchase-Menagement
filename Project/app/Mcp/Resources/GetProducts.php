@@ -4,13 +4,14 @@ namespace App\Mcp\Resources;
 
 use App\Http\Resources\ProductsResource;
 use App\Models\Products;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Resource;
 use League\Uri\UriTemplate;
 
-#[Description('Get all products with optional stock filters')]
+#[Description('Get all suppliers')]
 class GetProducts extends Resource
 {
     /**
@@ -18,17 +19,7 @@ class GetProducts extends Resource
      */
     public function handle(Request $request): Response
     {
-        $query = Products::query();
-
-        if ($request->has('min_stock')) {
-            $query->where('stock_quantity', '>=', $request->get('min_stock'));
-        }
-
-        if ($request->has('max_stock')) {
-            $query->where('stock_quantity', '<=', $request->get('max_stock'));
-        }
-
-        $products = $query->get();
+        $products = Products::query()->get();
 
         return Response::json(
             ProductsResource::collection($products)->resolve()
@@ -36,10 +27,10 @@ class GetProducts extends Resource
     }
 
     /**
-     * Define the URI template for this resource.
+     * Define the URI template.
      */
     public function uriTemplate(): UriTemplate
     {
-        return new UriTemplate('/api/products{?min_stock,max_stock}');
+        return new UriTemplate('/api/suppliers');
     }
 }

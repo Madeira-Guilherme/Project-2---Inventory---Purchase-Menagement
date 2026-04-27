@@ -3,24 +3,24 @@
 namespace App\Mcp\Tools;
 
 use App\Models\PurchaseOrders;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Support\Facades\DB;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
-use Illuminate\Support\Facades\DB;
 
 #[Description('Mark a purchase order as received and update stock')]
 class ReceivePurchaseOrder extends Tool
 {
+    /**
+     * Handle the tool execution.
+     */
     public function handle(Request $request): Response
     {
         $id = $request->get('id');
 
-        $purchase = PurchaseOrders::with('items.product')->find($id);
-
-        if (!$purchase) {
-            return Response::json(['message' => 'Purchase order not found'], 404);
-        }
+        $purchase = PurchaseOrders::with('items.product')->findOrFail($id);
 
         if ($purchase->status !== 'submitted') {
             return Response::json([
@@ -46,5 +46,17 @@ class ReceivePurchaseOrder extends Tool
             'message' => 'Purchase order received successfully',
             'data' => $purchase->fresh(),
         ]);
+    }
+
+    /**
+     * Get the tool's input schema.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'id' => $schema->integer()
+                ->description('ID of the purchase order to receive.')
+                ->required(),
+        ];
     }
 }

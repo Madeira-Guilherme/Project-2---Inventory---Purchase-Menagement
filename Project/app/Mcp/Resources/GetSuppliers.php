@@ -2,29 +2,27 @@
 
 namespace App\Mcp\Resources;
 
-use App\Http\Resources\PurchaseOrderResource;
-use App\Models\PurchaseOrders;
+use App\Http\Resources\SuppliersResource;
+use App\Models\Suppliers;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Resource;
 use League\Uri\UriTemplate;
 
-#[Description('Get a single purchase order')]
-class GetSinglePurchaseOrder extends Resource
+#[Description('Get all suppliers')]
+class GetSuppliers extends Resource
 {
     /**
      * Handle the resource request.
      */
     public function handle(Request $request): Response
     {
-        $id = $request->get('purchases');
-
-        $order = PurchaseOrders::with(['items.product'])
-            ->findOrFail($id);
+        $suppliers = Suppliers::query()->get();
 
         return Response::json(
-            (new PurchaseOrderResource($order))->resolve()
+            SuppliersResource::collection($suppliers)->resolve()
         );
     }
 
@@ -33,6 +31,6 @@ class GetSinglePurchaseOrder extends Resource
      */
     public function uriTemplate(): UriTemplate
     {
-        return new UriTemplate('/api/purchaseorders/{purchases}');
+        return new UriTemplate('/api/suppliers');
     }
 }

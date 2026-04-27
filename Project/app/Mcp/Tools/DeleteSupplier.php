@@ -2,15 +2,15 @@
 
 namespace App\Mcp\Tools;
 
-use App\Models\PurchaseOrders;
+use App\Models\Suppliers;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Delete a purchase order')]
-class DeletePurchaseOrder extends Tool
+#[Description('Delete a supplier')]
+class DeleteSupplier extends Tool
 {
     /**
      * Handle the tool execution.
@@ -19,12 +19,12 @@ class DeletePurchaseOrder extends Tool
     {
         $id = $request->get('id');
 
-        $purchase = PurchaseOrders::findOrFail($id);
+        $supplier = Suppliers::findOrFail($id);
 
-        $purchase->delete();
+        $supplier->delete();
 
         return Response::json([
-            'message' => 'Purchase order deleted successfully',
+            'message' => 'Supplier deleted successfully',
         ]);
     }
 
@@ -35,7 +35,7 @@ class DeletePurchaseOrder extends Tool
     {
         return [
             'id' => $schema->integer()
-                ->description('ID of the purchase order to delete.')
+                ->description('ID of the supplier to delete.')
                 ->required(),
         ];
     }

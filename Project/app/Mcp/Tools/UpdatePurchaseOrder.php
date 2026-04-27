@@ -4,7 +4,7 @@ namespace App\Mcp\Tools;
 
 use App\Http\Resources\PurchaseOrderResource;
 use App\Models\PurchaseOrders;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -18,7 +18,7 @@ class UpdatePurchaseOrder extends Tool
      */
     public function handle(Request $request): Response
     {
-        $id = $request->get('purchases');
+        $id = $request->get('id');
 
         $purchase = PurchaseOrders::find($id);
 
@@ -28,7 +28,7 @@ class UpdatePurchaseOrder extends Tool
             ], 404);
         }
 
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'supplier_id'   => 'sometimes|required|integer|exists:suppliers,id',
             'order_number'  => 'sometimes|required|string|unique:purchase_orders,order_number,' . $id,
             'status'        => 'sometimes|nullable|string',
@@ -38,20 +38,51 @@ class UpdatePurchaseOrder extends Tool
             'created_by'    => 'sometimes|required|integer|exists:users,id',
         ]);
 
-        if ($validator->fails()) {
-            return Response::json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $validated = $validator->validated();
-
         $purchase->update($validated);
 
         return Response::json([
             'message' => 'Purchase order updated successfully',
             'data' => (new PurchaseOrderResource($purchase->fresh()))->resolve(),
         ]);
+    }
+
+    /**
+     * Get the tool's input schema.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'id' => $schema->integer()
+                ->description('ID of the purchase order to update.')
+                ->required(),
+
+            'supplier_id' => $schema->integer()
+                ->description('Supplier ID.')
+                ->nullable(),
+
+            'order_number' => $schema->string()
+                ->description('Unique purchase order number.')
+                ->nullable(),
+
+            'status' => $schema->string()
+                ->description('Status of the purchase order.')
+                ->nullable(),
+
+            'total_amount' => $schema->number()
+                ->description('Total amount of the purchase order.')
+                ->nullable(),
+
+            'ordered_at' => $schema->string()
+                ->description('Order date (ISO format).')
+                ->nullable(),
+
+            'received_at' => $schema->string()
+                ->description('Received date (ISO format).')
+                ->nullable(),
+
+            'created_by' => $schema->integer()
+                ->description('User ID who created the order.')
+                ->nullable(),
+        ];
     }
 }

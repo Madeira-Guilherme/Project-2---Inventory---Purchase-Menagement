@@ -4,8 +4,8 @@ namespace App\Mcp\Tools;
 
 use App\Http\Resources\PurchaseOrderResource;
 use App\Models\PurchaseOrders;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -19,7 +19,7 @@ class CreatePurchaseOrder extends Tool
      */
     public function handle(Request $request): Response
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'supplier_id'   => 'required|integer|exists:suppliers,id',
             'order_number'  => 'required|string|unique:purchase_orders,order_number',
             'total_amount'  => 'required|numeric|min:0',
@@ -31,15 +31,6 @@ class CreatePurchaseOrder extends Tool
             'items.*.product_id' => 'required|integer|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
         ]);
-
-        if ($validator->fails()) {
-            return Response::json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $validated = $validator->validated();
 
         $purchase = DB::transaction(function () use ($validated) {
             $purchase = PurchaseOrders::create([
@@ -68,5 +59,50 @@ class CreatePurchaseOrder extends Tool
                 $purchase->load('items.product')
             ))->resolve(),
         ], 201);
+    }
+
+    /**
+     * Get the tool's input schema.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'supplier_id' => $schema->integer()
+                ->description('Supplier ID.')
+                ->required(),
+
+            'order_number' => $schema->string()
+                ->description('Unique purchase order number.')
+                ->required(),
+
+            'total_amount' => $schema->number()
+                ->description('Total amount of the purchase order.')
+                ->required(),
+
+            'ordered_at' => $schema->string()
+                ->description('Order date (ISO format).')
+                ->required(),
+
+            'received_at' => $schema->string()
+                ->description('Received date (ISO format).')
+                ->nullable(),
+
+            'created_by' => $schema->integer()
+                ->description('User ID who created the order.')
+                ->required(),
+
+            'items' => $schema->array(
+                $schema->object([
+                    'product_id' => $schema->integer()
+                        ->description('Product ID.')
+                        ->required(),
+
+                    'quantity' => $schema->integer()
+                        ->description('Quantity ordered.')
+                        ->required(),
+                ])
+            )->description('List of purchase order items.')
+             ->required(),
+        ];
     }
 }
