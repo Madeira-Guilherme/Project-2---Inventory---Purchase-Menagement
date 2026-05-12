@@ -3,6 +3,7 @@
 namespace App\Mcp\Tools;
 
 use App\Http\Resources\PurchaseOrderResource;
+use App\Models\Products;
 use App\Models\PurchaseOrders;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +21,10 @@ class CreatePurchaseOrder extends Tool
     public function handle(Request $request): Response
     {
         $validated = $request->validate([
-            'supplier_id'   => 'required|integer|exists:suppliers,id',
-            'order_number'  => 'required|string|unique:purchase_orders,order_number',
-            'total_amount'  => 'required|numeric|min:0',
-            'ordered_at'    => 'required|date',
-            'received_at'   => 'nullable|date',
-            'created_by'    => 'required|integer|exists:users,id',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'ordered_at'  => 'required|date',
+            'received_at' => 'nullable|date',
+            'created_by'  => 'required|integer|exists:users,id',
 
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|integer|exists:products,id',
@@ -33,22 +32,38 @@ class CreatePurchaseOrder extends Tool
         ]);
 
         $purchase = DB::transaction(function () use ($validated) {
+
+            // safer order number (no race condition)
+            $orderNumber = 'PO-' . now()->format('Ymd') . '-' . PurchaseOrders::max('id') + 1;
+
             $purchase = PurchaseOrders::create([
                 'supplier_id' => $validated['supplier_id'],
-                'order_number' => $validated['order_number'],
+                'order_number' => $orderNumber,
                 'status' => 'draft',
-                'total_amount' => $validated['total_amount'],
+                'total_amount' => 0,
                 'ordered_at' => $validated['ordered_at'],
                 'received_at' => $validated['received_at'] ?? null,
                 'created_by' => $validated['created_by'],
             ]);
 
+            $totalAmount = 0;
+
             foreach ($validated['items'] as $item) {
+                $product = Products::findOrFail($item['product_id']);
+
+                $lineTotal = $product->unit_price * $item['quantity'];
+                $totalAmount += $lineTotal;
+
                 $purchase->items()->create([
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
+                    'unit_price' => $product->unit_price,
                 ]);
             }
+
+            $purchase->update([
+                'total_amount' => $totalAmount,
+            ]);
 
             return $purchase;
         });
@@ -69,14 +84,6 @@ class CreatePurchaseOrder extends Tool
         return [
             'supplier_id' => $schema->integer()
                 ->description('Supplier ID.')
-                ->required(),
-
-            'order_number' => $schema->string()
-                ->description('Unique purchase order number.')
-                ->required(),
-
-            'total_amount' => $schema->number()
-                ->description('Total amount of the purchase order.')
                 ->required(),
 
             'ordered_at' => $schema->string()
