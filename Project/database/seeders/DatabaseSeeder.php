@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Products;
 use App\Models\PurchaseOrders;
 use App\Models\PurchaseOrdersItems;
+use App\Models\SellOrderItems;
+use App\Models\SellOrders;
 use App\Models\Suppliers;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -58,5 +60,8 @@ class DatabaseSeeder extends Seeder
         Suppliers::factory(10)->create();
         PurchaseOrders::factory(10)->create();
         PurchaseOrdersItems::factory(10)->create();
+
+        SellOrders::factory(10)->create();
+        SellOrderItems::factory(10)->create();
     }
 }
