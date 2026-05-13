@@ -37,51 +37,22 @@ use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
 
-#[Name('WarehouseServer')]
+#[Name('SellOrderServer')]
 #[Version('0.0.1')]
-#[Instructions('The Mcp server with the capability to interact with the entire inventory system')]
-class WarehouseServer extends Server
+#[Instructions('The Mcp server to interact with the SellOrders of the inventory system')]
+class SellOrderServer extends Server
 {
     protected array $tools = [
-        //Products
-        CreateProduct::class,
-        UpdateProduct::class,
-        DeleteProduct::class,
-        GetSpecificProduct::class,
-        GetLowStockProducts::class,
-        //Purchase Orders
-        CreatePurchaseOrder::class,
-        UpdatePurchaseOrder::class,
-        DeletePurchaseOrder::class,
-        SubmitPurchaseOrder::class,
-        ReceivePurchaseOrder::class,
-        CancelPurchaseOrder::class,
-        GetSpecificPurchaseOrder::class,
-        GetFilteredPurchaseOrders::class,
-        AddProductToOrder::class,
-        //Suppliers
-        CreateSupplier::class,
-        UpdateSupplier::class,
-        DeleteSupplier::class,
-        GetSpecificSupplier::class,
-        //Sell Orders
-        CreateSellOrder::class,
         DeleteSellOrder::class,
         UpdateSellOrder::class,
         GetSpecificSellOrder::class,
+        CreateSellOrder::class,
     ];
 
     protected array $resources = [
-        //Products
-        GetProducts::class,
-        //Purchase Orders
-        GetPurchaseOrder::class,
-        //Suppliers
-        GetSuppliers::class,
         GetSellOrders::class,
     ];
 
     protected array $prompts = [
-        //PurchaseOrderReport::class,
     ];
 }

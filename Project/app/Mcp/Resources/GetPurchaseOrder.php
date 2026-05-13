@@ -11,7 +11,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Resource;
 use League\Uri\UriTemplate;
 
-#[Description('Get all suppliers')]
+#[Description('Get all Purchase Orders')]
 class GetPurchaseOrder extends Resource
 {
     /**

@@ -33,7 +33,7 @@ use HasFactory, SoftDeletes;
 
     public function items()
     {
-        return $this->hasMany(PurchaseOrdersItems::class, 'purchase_order_id');
+        return $this->hasMany(SellOrderItems::class, 'sell_order_id');
     }
 
     public function creator()

@@ -2,8 +2,10 @@
 
 namespace App\Mcp\Resources;
 
-use App\Http\Resources\ProductsResource;
-use App\Models\Products;
+use App\Http\Resources\PurchaseOrderResource;
+use App\Http\Resources\SellOrderResource;
+use App\Models\PurchaseOrders;
+use App\Models\SellOrders;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -11,18 +13,18 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Resource;
 use League\Uri\UriTemplate;
 
-#[Description('Get all Products')]
-class GetProducts extends Resource
+#[Description('Get all Sell Orders')]
+class GetSellOrders extends Resource
 {
     /**
      * Handle the resource request.
      */
     public function handle(Request $request): Response
     {
-        $products = Products::query()->get();
+        $orders = SellOrders::query()->get();
 
         return Response::json(
-            ProductsResource::collection($products)->resolve()
+            SellOrderResource::collection($orders)->resolve()
         );
     }
 
