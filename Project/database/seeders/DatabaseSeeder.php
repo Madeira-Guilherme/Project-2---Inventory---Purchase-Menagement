@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Products;
 use App\Models\PurchaseOrders;
 use App\Models\PurchaseOrdersItems;
+use App\Models\RestockRequest;
 use App\Models\SellOrderItems;
 use App\Models\SellOrders;
 use App\Models\Suppliers;
@@ -63,5 +64,7 @@ class DatabaseSeeder extends Seeder
 
         SellOrders::factory(10)->create();
         SellOrderItems::factory(10)->create();
+
+        RestockRequest::factory(10)->create();
     }
 }

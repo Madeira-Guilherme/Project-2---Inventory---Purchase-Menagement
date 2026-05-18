@@ -14,6 +14,7 @@ class RestockRequest extends Model
         'requester_id',
         'product_id',
         'reason',
+        'completed',
     ];
 
     /**

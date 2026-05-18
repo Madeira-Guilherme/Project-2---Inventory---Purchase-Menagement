@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->string('reason');
 
+            $table->boolean('completed');
+
             $table->softDeletes();
             $table->timestamps();
     });

@@ -21,6 +21,7 @@ class RestockRequestFactory extends Factory
             'requester_id' => User::factory(),
             'product_id' => Products::factory(),
             'reason' => $this->faker->sentence(),
+            'completed' => false,
         ];
     }
 }
