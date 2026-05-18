@@ -12,6 +12,7 @@ use App\Mcp\Resources\GetSingleSupplier;
 use App\Mcp\Resources\GetSuppliers;
 use App\Mcp\Tools\AddProductToOrder;
 use App\Mcp\Tools\CancelPurchaseOrder;
+use App\Mcp\Tools\CancelSellOrder;
 use App\Mcp\Tools\CreateProduct;
 use App\Mcp\Tools\CreatePurchaseOrder;
 use App\Mcp\Tools\CreateSellOrder;
@@ -31,6 +32,7 @@ use App\Mcp\Tools\SubmitPurchaseOrder;
 use App\Mcp\Tools\UpdateProduct;
 use App\Mcp\Tools\UpdatePurchaseOrder;
 use App\Mcp\Tools\UpdateSellOrder;
+use App\Mcp\Tools\UpdateSellOrderStatus;
 use App\Mcp\Tools\UpdateSupplier;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
@@ -68,6 +70,8 @@ class WarehouseServer extends Server
         CreateSellOrder::class,
         DeleteSellOrder::class,
         UpdateSellOrder::class,
+        UpdateSellOrderStatus::class,
+        CancelSellOrder::class,
         GetSpecificSellOrder::class,
     ];
 
