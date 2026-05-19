@@ -10,7 +10,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
 #[Description('Mark a restock request as completed.')]
-class CompleteRestockRequest extends Tool
+class DenyRestockRequest extends Tool
 {
     /**
      * Handle the tool request.
@@ -37,12 +37,12 @@ class CompleteRestockRequest extends Tool
         }
 
         $restockRequest->update([
-            'status' => 'completed',
+            'status' => 'denied',
         ]);
 
         return Response::json([
             'success' => true,
-            'message' => 'Restock request marked as completed.',
+            'message' => 'Restock request marked as denied.',
             'data' => [
                 'id' => $restockRequest->id,
                 'status' => $restockRequest->status,
@@ -60,7 +60,7 @@ class CompleteRestockRequest extends Tool
     {
         return [
             'restock_request_id' => $schema->integer()
-                ->description('The ID of the restock request to complete.')
+                ->description('The ID of the restock request to deny.')
                 ->required(),
         ];
     }

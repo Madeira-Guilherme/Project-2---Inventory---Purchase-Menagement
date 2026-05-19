@@ -23,7 +23,7 @@ class CreateRestockRequest extends Tool
             'requester_id' => $data['requester_id'],
             'product_id'   => $data['product_id'],
             'reason'       => $data['reason'] ?? null,
-            'completed'    => false,
+            'status'    => "pending",
         ]);
 
         return Response::json([
@@ -34,7 +34,7 @@ class CreateRestockRequest extends Tool
                 'requester_id'  => $restockRequest->requester_id,
                 'product_id'    => $restockRequest->product_id,
                 'reason'        => $restockRequest->reason,
-                'completed'     => $restockRequest->completed,
+                'status'     => $restockRequest->completed,
                 'created_at'    => $restockRequest->created_at,
             ],
         ]);

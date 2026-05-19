@@ -25,6 +25,7 @@ use App\Mcp\Tools\DeletePurchaseOrder;
 use App\Mcp\Tools\DeleteRestockRequest;
 use App\Mcp\Tools\DeleteSellOrder;
 use App\Mcp\Tools\DeleteSupplier;
+use App\Mcp\Tools\DenyRestockRequest;
 use App\Mcp\Tools\GetFilteredPurchaseOrders;
 use App\Mcp\Tools\GetLowStockProducts;
 use App\Mcp\Tools\GetSpecificProduct;
@@ -82,6 +83,7 @@ class WarehouseServer extends Server
         CreateRestockRequest::class,
         DeleteRestockRequest::class,
         CompleteRestockRequest::class,
+        DenyRestockRequest::class,
     ];
 
     protected array $resources = [
